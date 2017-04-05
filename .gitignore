@@ -1,0 +1,13 @@
+*.creator
+*.creator.user
+*.files
+*.includes
+*.config
+obj/
+build/
+clank
+
+*.swp
+*.swo
+
+.ycm*
