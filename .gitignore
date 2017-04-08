@@ -11,3 +11,4 @@ clank
 *.swo
 
 .ycm*
+.vscode
