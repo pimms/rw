@@ -1,5 +1,6 @@
 #include "Except.h"
 #include <sstream>
+#include <stdarg.h>
 
 namespace Internal
 {

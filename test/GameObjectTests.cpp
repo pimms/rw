@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "GameObject.h"
-#include "EventDispatch.h"
+#include "core/GameObject.h"
+#include "core/EventDispatch.h"
 
 TEST(GameObjectTests, DummyTest)
 {
