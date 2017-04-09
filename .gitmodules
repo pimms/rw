@@ -1,3 +1,6 @@
 [submodule "thirdparty/liquidfun"]
 	path = thirdparty/liquidfun
 	url = https://github.com/google/liquidfun
+[submodule "thirdparty/googletest"]
+	path = thirdparty/googletest
+	url = https://github.com/google/googletest
