@@ -34,3 +34,6 @@ find_package(SFML 2.4 COMPONENTS system window graphics network audio REQUIRED)
 message("SFML libs: " ${SFML_LIBRARIES})
 target_link_libraries(rwater ${SFML_LIBRARIES})
 target_include_directories(rwater PUBLIC ${SFML_INCLUDE_DIR})
+
+# Weird way to enable C++11 support, but oh well
+target_compile_features(rwater PRIVATE cxx_range_for)
