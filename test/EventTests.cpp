@@ -4,6 +4,8 @@
 
 namespace rw
 {
+namespace test
+{
 
 class IntEvent : public Event
 {
@@ -115,4 +117,5 @@ TEST(EventTest, SimpleDispatch)
     ASSERT_EQ(2, irecv->receivedInt);
 }
 
+}
 }
