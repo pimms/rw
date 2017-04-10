@@ -43,7 +43,27 @@ protected:
     template<typename EvtT>
     void Subscribe(std::function<void(const std::shared_ptr<EvtT>)> func)
     {
-        GetEventDispatch()->Subscribe<EvtT>(func);
+        GetEventDispatch()->Subscribe<EvtT>(shared_from_this(), func);
+    }
+
+    /**
+     * Given a method in your Component on the form:
+     *  MyComponent::OnSomeEvent(const std::shared_ptr<SomeEvent> e);
+     *
+     * You can subscribe on SomeEvent by calling:
+     *  Subscribe(&MyComponent::OnSomeEvent);
+     */
+    template<typename MyT, typename EvtT>
+    void Subscribe(void (MyT::*method)(const std::shared_ptr<EvtT>))
+    {
+        static_assert(std::is_base_of<Component,MyT>::value,
+                      "MyT must be a subclass of Component");
+        static_assert(std::is_base_of<Event,EvtT>::value,
+                      "EvtT must be a subclass of Event");
+
+        std::function<void(const std::shared_ptr<EvtT>)> func;
+        func = std::bind(method, (MyT*)this, std::placeholders::_1);
+        GetEventDispatch()->Subscribe(shared_from_this(), func);
     }
 
 private:

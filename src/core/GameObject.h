@@ -9,7 +9,7 @@ namespace rw
 class Component;
 class EventDispatch;
 
-class GameObject
+class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
     GameObject(std::shared_ptr<EventDispatch> dispatch);

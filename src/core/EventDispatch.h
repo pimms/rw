@@ -41,10 +41,12 @@ public:
     }
 
     template<typename EType>
-    void Subscribe(std::shared_ptr<IEventReceiver> recv, std::function<void(const std::shared_ptr<EType>)> cb)
+    void Subscribe(std::shared_ptr<IEventReceiver> recv,
+                   std::function<void(const std::shared_ptr<EType>)> cb)
     {
         std::lock_guard<std::mutex> lock(_mutex);
-        static_assert(std::is_base_of<Event, EType>::value, "EType must be subclass of Event");
+        static_assert(std::is_base_of<Event, EType>::value,
+                      "EType must be subclass of Event");
 
         EventSubscription sub;
         sub.receiver = recv;

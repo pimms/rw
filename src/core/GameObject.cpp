@@ -23,6 +23,7 @@ void GameObject::AddComponent(std::shared_ptr<Component> component)
     // TODO: We may want to ensure that we're only ever adding
     // one of each component-type to each gameobject.
     _components.push_back(component);
+    component->OnAttach(shared_from_this());
 }
 
 std::shared_ptr<EventDispatch> GameObject::GetEventDispatch() const

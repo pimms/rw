@@ -23,7 +23,7 @@ void Component::OnAttach(std::shared_ptr<GameObject> gameObject)
         THROW("Already added to a GameObject");
     }
 
-    if (_gameObject != nullptr) {
+    if (gameObject != nullptr) {
         _gameObject = gameObject;
         RegisterSubscriptions();
     } else {
