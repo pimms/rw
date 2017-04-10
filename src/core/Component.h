@@ -6,10 +6,11 @@
 
 #include <typeinfo>
 #include <functional>
+#include <memory>
 
 class GameObject;
 
-class Component : public IEventReceiver
+class Component : public IEventReceiver, public std::enable_shared_from_this<Component>
 {
 public:
     Component();
@@ -23,9 +24,9 @@ public:
      * If you choose to override this method, ensure that you're also
      * calling the overridden method.
      */
-    virtual void OnAttach(GameObject *obj);
+    virtual void OnAttach(std::shared_ptr<GameObject> obj);
 
-    GameObject* GetGameObject() const;
+    std::shared_ptr<GameObject> GetGameObject() const;
 
 protected:
     /**
@@ -37,15 +38,15 @@ protected:
     virtual void RegisterSubscriptions() { }
 
     template<typename EvtT>
-    void Subscribe(std::function<void(const EvtT*)> func)
+    void Subscribe(std::function<void(const std::shared_ptr<EvtT>)> func)
     {
         GetEventDispatch()->Subscribe<EvtT>(func);
     }
 
 private:
-    EventDispatch* GetEventDispatch() const;
+    std::shared_ptr<EventDispatch> GetEventDispatch() const;
 
-    GameObject *_gameObject;
+    std::shared_ptr<GameObject> _gameObject;
 };
 
 /* ComponentId */
@@ -58,7 +59,7 @@ inline ComponentId GetComponentId(const CompT&)
 }
 
 template<class CompT>
-inline ComponentId GetComponentId(CompT*)
+inline ComponentId GetComponentId(std::shared_ptr<CompT>)
 {
     return GetTypeId<Component, CompT>();
 }

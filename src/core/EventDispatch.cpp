@@ -1,7 +1,7 @@
 #include "EventDispatch.h"
 
 
-void EventDispatch::Raise(const Event *event)
+void EventDispatch::Raise(const std::shared_ptr<Event> event)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -17,7 +17,7 @@ void EventDispatch::Raise(const Event *event)
     }
 }
 
-void EventDispatch::UnsubscribeAll(IEventReceiver *recv)
+void EventDispatch::UnsubscribeAll(std::shared_ptr<IEventReceiver> recv)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
