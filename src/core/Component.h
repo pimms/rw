@@ -8,6 +8,9 @@
 #include <functional>
 #include <memory>
 
+namespace rw
+{
+
 class GameObject;
 
 class Component : public IEventReceiver, public std::enable_shared_from_this<Component>
@@ -53,14 +56,21 @@ private:
 typedef TypeId ComponentId;
 
 template<class CompT>
-inline ComponentId GetComponentId(const CompT&)
+inline ComponentId GetComponentId()
 {
-    return GetTypeId<Component, CompT>();
+    return ::rw::GetTypeId<Component, CompT>();
 }
 
 template<class CompT>
-inline ComponentId GetComponentId(std::shared_ptr<CompT>)
+inline ComponentId GetComponentId(const CompT&)
 {
-    return GetTypeId<Component, CompT>();
+    return ::rw::GetTypeId<Component, CompT>();
 }
 
+template<class CompT>
+inline ComponentId GetComponentId(const std::shared_ptr<CompT>&)
+{
+    return ::rw::GetTypeId<Component, CompT>();
+}
+
+}

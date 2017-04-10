@@ -2,6 +2,9 @@
 #include <sstream>
 #include <stdarg.h>
 
+namespace rw
+{
+
 namespace Internal
 {
 
@@ -22,6 +25,8 @@ void Throw(const char *file, const char *func, int line, const char *msg, ...)
     ss << formatted;
     std::string s = ss.str();
     throw Exception(s);
+}
+
 }
 
 }

@@ -1,21 +1,7 @@
 #include "EventDispatch.h"
 
-
-void EventDispatch::Raise(const std::shared_ptr<Event> event)
+namespace rw
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
-    EventId id = GetEventId(event);
-
-    if (_subs.count(id) != 0) {
-        std::vector<EventSubscription> *vec;
-        vec = &_subs[id];
-
-        for (int i=0; i<(int)vec->size(); i++) {
-            (*vec)[i].responder(event);
-        }
-    }
-}
 
 void EventDispatch::UnsubscribeAll(std::shared_ptr<IEventReceiver> recv)
 {
@@ -32,4 +18,6 @@ void EventDispatch::UnsubscribeAll(std::shared_ptr<IEventReceiver> recv)
             }
         }
     }
+}
+
 }

@@ -3,6 +3,9 @@
 
 #include <typeinfo>
 
+namespace rw
+{
+
 GameObject::GameObject(std::shared_ptr<EventDispatch> dispatch)
 {
     _eventDispatch = dispatch;
@@ -27,3 +30,4 @@ std::shared_ptr<EventDispatch> GameObject::GetEventDispatch() const
     return _eventDispatch;
 }
 
+}

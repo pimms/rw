@@ -1,8 +1,10 @@
 #pragma once
 
 #include "TypeId.h"
-
 #include <memory>
+
+namespace rw
+{
 
 class Event
 {
@@ -15,14 +17,21 @@ private:
 typedef TypeId EventId;
 
 template<class T>
-inline EventId GetEventId(const T&)
+inline EventId GetEventId()
 {
-    return GetTypeId<Event, T>();
+    return ::rw::GetTypeId<Event, T>();
 }
 
 template<class T>
-inline EventId GetEventId(std::shared_ptr<T>)
+inline EventId GetEventId(const T&)
 {
-    return GetTypeId<Event, T>();
+    return ::rw::GetTypeId<Event, T>();
 }
 
+template<class T>
+inline EventId GetEventId(const std::shared_ptr<T>)
+{
+    return ::rw::GetTypeId<Event, T>();
+}
+
+}

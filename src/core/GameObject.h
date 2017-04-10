@@ -3,6 +3,9 @@
 #include <vector>
 #include <memory>
 
+namespace rw
+{
+
 class Component;
 class EventDispatch;
 
@@ -20,3 +23,4 @@ private:
     std::shared_ptr<EventDispatch> _eventDispatch;
     std::vector<std::shared_ptr<Component>> _components;
 };
+}
