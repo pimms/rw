@@ -2,6 +2,8 @@
 
 #include "TypeId.h"
 
+#include <memory>
+
 class Event
 {
 public:
@@ -19,7 +21,7 @@ inline EventId GetEventId(const T&)
 }
 
 template<class T>
-inline EventId GetEventId(T*)
+inline EventId GetEventId(std::shared_ptr<T>)
 {
     return GetTypeId<Event, T>();
 }

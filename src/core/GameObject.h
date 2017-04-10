@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 class Component;
 class EventDispatch;
@@ -8,14 +9,14 @@ class EventDispatch;
 class GameObject
 {
 public:
-    GameObject(EventDispatch *dispatch);
+    GameObject(std::shared_ptr<EventDispatch> dispatch);
     ~GameObject();
 
-    void AddComponent(Component *component);
+    void AddComponent(std::shared_ptr<Component> component);
 
-    EventDispatch* GetEventDispatch() const;
+    std::shared_ptr<EventDispatch> GetEventDispatch() const;
 
 private:
-    EventDispatch *_eventDispatch;
-    std::vector<Component*> _components;
+    std::shared_ptr<EventDispatch> _eventDispatch;
+    std::vector<std::shared_ptr<Component>> _components;
 };

@@ -8,21 +8,22 @@
 #include <map>
 #include <vector>
 #include <mutex>
+#include <memory>
 
 class EventDispatch
 {
 public:
-    using EventFirstResponder = std::function<void(const Event*)>;
+    using EventFirstResponder = std::function<void(const std::shared_ptr<Event>)>;
     struct EventSubscription
     {
-        IEventReceiver *receiver;
+        std::shared_ptr<IEventReceiver> receiver;
         EventFirstResponder responder;
     };
 
-    void Raise(const Event *event);
+    void Raise(const std::shared_ptr<Event> event);
 
     template<typename EType>
-    void Subscribe(IEventReceiver *recv, std::function<void(const EType*)> cb)
+    void Subscribe(std::shared_ptr<IEventReceiver> recv, std::function<void(const std::shared_ptr<EType>)> cb)
     {
         std::lock_guard<std::mutex> lock(_mutex);
         static_assert(std::is_base_of<Event, EType>::value, "EType must be subclass of Event");
@@ -30,7 +31,7 @@ public:
         EventSubscription sub;
         sub.receiver = recv;
         sub.responder = [=](const Event *e) {
-            cb((const EType*)e);
+            cb((const std::shared_ptr<EType>)e);
         };
 
         EventId eid = GetEventId<EType>();
@@ -40,7 +41,7 @@ public:
         _subs[eid].push_back(sub);
     }
 
-    void UnsubscribeAll(IEventReceiver *recv);
+    void UnsubscribeAll(std::shared_ptr<IEventReceiver> recv);
 
 private:
     std::mutex _mutex;
