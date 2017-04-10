@@ -1,13 +1,16 @@
 #include "InputHandler.h"
 
-namespace rw {
+namespace rw
+{
+namespace handler
+{
 
 InputHandler::InputHandler(std::shared_ptr<sf::Window> window):
     _window(window)
 {
 }
 
-void InputHandler::HandleInput()
+void InputHandler::UpdateInput()
 {
     sf::Event event;
     while (_window->pollEvent(event))
@@ -49,4 +52,5 @@ void InputHandler::HandleInput()
     }
 }
 
+}
 }

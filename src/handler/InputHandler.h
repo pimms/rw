@@ -7,6 +7,7 @@
 
 namespace rw
 {
+namespace handler {
 
 class InputHandler
 {
@@ -14,7 +15,8 @@ private:
     std::shared_ptr<sf::Window> _window;
 public:
     InputHandler(std::shared_ptr<sf::Window> window);
-    void HandleInput();
+    void UpdateInput();
 };
 
+}
 }
