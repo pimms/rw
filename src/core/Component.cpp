@@ -3,6 +3,9 @@
 #include "GameObject.h"
 #include "EventDispatch.h"
 
+namespace rw
+{
+
 Component::Component():
     _gameObject(nullptr)
 {
@@ -34,3 +37,4 @@ std::shared_ptr<EventDispatch> Component::GetEventDispatch() const
     return _gameObject->GetEventDispatch();
 }
 
+}

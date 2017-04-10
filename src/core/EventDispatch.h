@@ -10,6 +10,9 @@
 #include <mutex>
 #include <memory>
 
+namespace rw
+{
+
 class EventDispatch
 {
 public:
@@ -20,7 +23,22 @@ public:
         EventFirstResponder responder;
     };
 
-    void Raise(const std::shared_ptr<Event> event);
+    template<class EType>
+    void Raise(const std::shared_ptr<EType> event)
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+
+        EventId id = GetEventId(event);
+
+        if (_subs.count(id) != 0) {
+            std::vector<EventSubscription> *vec;
+            vec = &_subs[id];
+
+            for (int i=0; i<(int)vec->size(); i++) {
+                (*vec)[i].responder(event);
+            }
+        }
+    }
 
     template<typename EType>
     void Subscribe(std::shared_ptr<IEventReceiver> recv, std::function<void(const std::shared_ptr<EType>)> cb)
@@ -30,8 +48,10 @@ public:
 
         EventSubscription sub;
         sub.receiver = recv;
-        sub.responder = [=](const Event *e) {
-            cb((const std::shared_ptr<EType>)e);
+        sub.responder = [=](const std::shared_ptr<Event> e) {
+            std::shared_ptr<EType> cast;
+            cast = std::static_pointer_cast<EType>(e);
+            cb(cast);
         };
 
         EventId eid = GetEventId<EType>();
@@ -47,3 +67,5 @@ private:
     std::mutex _mutex;
     std::map<EventId, std::vector<EventSubscription>> _subs;
 };
+
+}

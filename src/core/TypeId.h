@@ -2,6 +2,9 @@
 
 #include <typeinfo>
 
+namespace rw
+{
+
 typedef const std::type_info* TypeId;
 
 template<class BaseT, class SubT>
@@ -11,3 +14,4 @@ inline TypeId GetTypeId()
     return &typeid(SubT);
 }
 
+}
