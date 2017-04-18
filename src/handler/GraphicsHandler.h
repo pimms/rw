@@ -16,7 +16,9 @@ private:
 public:
     GraphicsHandler(std::shared_ptr<sf::RenderWindow> window);
     void UpdateGraphics();
+private:
+    void Draw();
 };
 
-}
-}
+} // handler
+} // rw

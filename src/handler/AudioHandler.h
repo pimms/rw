@@ -13,8 +13,8 @@ namespace handler
 class AudioHandler
 {
 private:
-    sf::Sound _sound;
-    sf::Music _music;
+    std::shared_ptr<sf::Sound> _sound;
+    std::shared_ptr<sf::Music> _music;
     std::map<std::string, sf::SoundBuffer> _buffers;
 public:
     AudioHandler();

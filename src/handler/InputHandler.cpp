@@ -1,5 +1,7 @@
 #include "InputHandler.h"
 
+#include "AudioHandler.h"
+
 namespace rw
 {
 namespace handler
@@ -42,6 +44,13 @@ void InputHandler::UpdateInput()
             case sf::Keyboard::D:
                 std::cout << "Move right" << std::endl;
                 break;
+            case sf::Keyboard::P:
+                {
+                    auto audio = std::make_shared<rw::handler::AudioHandler>();
+                    audio->AddSoundBuffer("test", "../resources/audio/teleport-space-morph.wav");
+                    audio->PlayBuffer("test");
+                }
+                break;
             default:
                 break;
             }
@@ -52,5 +61,5 @@ void InputHandler::UpdateInput()
     }
 }
 
-}
-}
+} // handler
+} // rw
