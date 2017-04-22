@@ -1,15 +1,18 @@
 cmake_minimum_required(VERSION 2.8)
 project(GAME)
 
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 set(CMAKE_CXX_STANDARD 14)
 include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
 
+find_package(Threads)
 # Rogue Waters source files
 file(GLOB_RECURSE RWSRCS src/*.cpp)
 file(GLOB_RECURSE RWHDRS src/*.h)
 add_executable(rwater ${RWSRCS} ${RWHDRS})
 target_compile_features(rwater PRIVATE cxx_range_for)
+target_link_libraries(rwater ${CMAKE_THREAD_LIBS_INIT})
 
 # Unit Testing source files (all rw-sources, bar main.cpp)
 list(REMOVE_ITEM RWSRCS ${CMAKE_SOURCE_DIR}/src/main.cpp)
@@ -55,4 +58,3 @@ target_link_libraries(rwater ${SFML_LIBRARIES})
 target_link_libraries(tests ${SFML_LIBRARIES})
 target_include_directories(rwater PUBLIC ${SFML_INCLUDE_DIR})
 target_include_directories(tests PUBLIC ${SFML_INCLUDE_DIR})
-

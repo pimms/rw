@@ -3,7 +3,6 @@
 
 #include "handler/InputHandler.h"
 #include "handler/GraphicsHandler.h"
-#include "handler/AudioHandler.h"
 
 int main()
 {

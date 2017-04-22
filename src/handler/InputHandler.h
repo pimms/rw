@@ -1,9 +1,14 @@
 #pragma once
 
-#include<SFML/Window.hpp>
-
+// std
 #include <iostream>
 #include <memory>
+
+// SFML
+#include <SFML/Window.hpp>
+
+// rw
+#include "IAudioHandler.h"
 
 namespace rw
 {
@@ -13,6 +18,7 @@ class InputHandler
 {
 private:
     std::shared_ptr<sf::Window> _window;
+
 public:
     InputHandler(std::shared_ptr<sf::Window> window);
     void UpdateInput();
