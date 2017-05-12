@@ -10,8 +10,10 @@ namespace rw
 namespace handler
 {
 
-InputHandler::InputHandler(std::shared_ptr<sf::Window> window):
-    _window(window)
+InputHandler::InputHandler(std::shared_ptr<sf::Window> window,
+                           std::shared_ptr<EventDispatch> evt):
+    _window(window),
+    _eventDispatch(evt)
 {
 }
 
@@ -27,9 +29,16 @@ void InputHandler::UpdateInput()
             break;
         case sf::Event::LostFocus:
             std::cout << "Rogue Waters lost focus" << std::endl;
+            break;
         case sf::Event::GainedFocus:
             std::cout << "Rogue Waters gained focus" << std::endl;
+            break;
+        case sf::Event::KeyReleased:
+            _keyboardState.OnKeyUp(event.key.code);
+            break;
         case sf::Event::KeyPressed:
+            _keyboardState.OnKeyDown(event.key.code);
+
             switch(event.key.code)
             {
             case sf::Keyboard::Escape:
@@ -50,6 +59,7 @@ void InputHandler::UpdateInput()
             default:
                 break;
             }
+            break;
 
         default:
             break;

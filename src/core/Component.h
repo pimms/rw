@@ -53,6 +53,7 @@ protected:
      * You can subscribe on SomeEvent by calling:
      *  Subscribe(&MyComponent::OnSomeEvent);
      */
+
     template<typename MyT, typename EvtT>
     void Subscribe(void (MyT::*method)(const std::shared_ptr<EvtT>))
     {
