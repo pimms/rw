@@ -13,7 +13,8 @@ namespace handler
 InputHandler::InputHandler(std::shared_ptr<sf::Window> window,
                            std::shared_ptr<EventDispatch> evt):
     _window(window),
-    _eventDispatch(evt)
+    _eventDispatch(evt),
+    _keyboardState(evt)
 {
 }
 
