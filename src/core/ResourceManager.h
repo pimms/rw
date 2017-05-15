@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <mutex>
+#include <vector>
 
 #include "Resource.h"
 

@@ -1,4 +1,5 @@
 #include "ResourceManager.h"
+#include "Except.h"
 
 #include <stdexcept>
 
@@ -89,14 +90,12 @@ ResourceHandle ResourceManager::Load(ResourceType type, const std::string &path)
 
             if (resource->GetType() != type) {
                 // TODO: Throw an exception with a more useful message
-                throw std::runtime_error("Resource already loaded as different type");
+                THROW("Resource already loaded as different type");
             }
         } else {
             Resource::Ptr resPtr = std::move(LoadResource(type, path));
             if (resPtr->GetType() != type) {
-                throw std::runtime_error(
-                        "Resource loaded successfully, but "
-                        "does not have the expected type");
+                THROW("Resource loaded successfully, but does not have the expected type");
             }
 
             _resources[path] = std::move(resPtr);
@@ -106,7 +105,7 @@ ResourceHandle ResourceManager::Load(ResourceType type, const std::string &path)
     }
 
     if (!resource) {
-        throw std::runtime_error("Failed to load resource: " + path);
+        THROW("Failed to load resource: %s", path.c_str());
     }
 
     ResourceHandle handle(resource);
@@ -134,7 +133,7 @@ size_t ResourceManager::GetLoadedBytes() const
 #ifdef WIN32
 void ResourceManager::IndexRecursively(const std::string &path)
 {
-    throw std::runtime_error("");
+    THROW("Not supporting rinky-dink OS'es yet")
 }
 #else
 void ResourceManager::IndexRecursively(const std::string &path)
@@ -196,7 +195,7 @@ Resource::Ptr ResourceManager::LoadResource(ResourceType type, const std::string
         }
 
         if (resource && !resource->Load()) {
-            throw std::runtime_error("Failed to load Resource: " + path);
+            THROW("Failed to load Resource %s", path.c_str());
         }
 
     } catch (std::exception ex) {

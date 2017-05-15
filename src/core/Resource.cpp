@@ -1,5 +1,6 @@
 #include "Resource.h"
-#include "ResourceManager.h"
+
+#include "Except.h"
 
 namespace rw
 {
@@ -64,8 +65,7 @@ ResourceHandle::ResourceHandle(Resource *res):
     _resource(res)
 {
     if (!_resource) {
-        throw std::runtime_error("Cannot initialize with a NULL Resource - "
-                "use the non-parameterized ctor!");
+        THROW("Cannot initialize with a NULL Resource - use the non-parameterized ctor!");
     }
 
     _resource->Retain();

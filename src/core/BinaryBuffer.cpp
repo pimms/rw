@@ -2,6 +2,8 @@
 
 #include <cassert>
 
+#include "Except.h"
+
 namespace rw
 {
 namespace core
@@ -13,7 +15,7 @@ BinaryBuffer::BinaryBuffer(const std::string &filePath):
 {
     std::ifstream file(filePath, std::ios::binary);
     if (!file) {
-        throw std::runtime_error("BinaryBuffer failed to open file: " + filePath);
+        THROW("BinaryBuffer failed to open file: %s ", filePath.c_str());
     }
 
     LoadFromStream(file);
@@ -45,7 +47,7 @@ void BinaryBuffer::LoadFromStream(std::ifstream &file)
 
     _buffer = new uint8_t[_size];
     if (!file.read((char*)_buffer, _size)) {
-        throw std::runtime_error("BinaryBuffer failed to read content from std::ifstream");
+        THROW("BinaryBuffer failed to read content from std::ifstream");
     }
 }
 

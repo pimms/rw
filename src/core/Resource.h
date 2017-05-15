@@ -4,6 +4,7 @@
 #include <atomic>
 
 #include "BinaryBuffer.h"
+#include "Except.h"
 
 namespace rw
 {
@@ -16,7 +17,6 @@ enum class ResourceType
     TEXTURE,
 };
 
-class ResourceManager;
 class ResourceHandle;
 
 /* Resource is an abstract superclass that handles arbitrary asset data.
@@ -90,7 +90,7 @@ public:
         static_assert(std::is_base_of<Resource, ResT>::value,
                 "ResT must be a subclass of Resource");
         if (!_resource) {
-            throw std::runtime_error("Attempt to reference uninitialized resource");
+            THROW("Attempt to reference uninitialized resource");
         }
         return (ResT*)_resource;
     }
@@ -102,7 +102,7 @@ public:
         static_assert(std::is_base_of<Resource, ResT>::value,
                 "ResT must be a subclass of Resource");
         if (!_resource) {
-            throw std::runtime_error("Attempt to reference uninitialized resource");
+            THROW("Attempt to reference uninitialized resource");
         }
         return (const ResT*)_resource;
     }

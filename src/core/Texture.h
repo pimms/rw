@@ -3,7 +3,6 @@
 #include <SFML/Graphics.hpp>
 
 #include "Resource.h"
-#include "ResourceManager.h"
 
 namespace rw
 {
