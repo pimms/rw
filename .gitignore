@@ -13,3 +13,5 @@ clank
 
 .ycm*
 .vscode
+
+.DS_Store

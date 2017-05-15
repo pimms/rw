@@ -23,6 +23,11 @@ bool Texture::Load()
     return _texture.loadFromMemory(buf->GetBuffer(), buf->GetSize());
 }
 
+sf::Vector2u Texture::GetSize() const
+{
+    return _texture.getSize();
+}
+
 
 }
 }

@@ -12,7 +12,8 @@ Resource
 ==================
 */
 Resource::Resource(ResourceType type, BinaryBuffer::Ptr buffer):
-    _type(type)
+    _type(type),
+    _retainCount(0)
 {
     _buffer = std::move(buffer);
 }
@@ -53,15 +54,50 @@ const BinaryBuffer* Resource::GetBuffer() const
 ResourceHandle
 ==================
 */
+ResourceHandle::ResourceHandle():
+    _resource(nullptr)
+{
+
+}
+
 ResourceHandle::ResourceHandle(Resource *res):
     _resource(res)
 {
+    if (!_resource) {
+        throw std::runtime_error("Cannot initialize with a NULL Resource - "
+                "use the non-parameterized ctor!");
+    }
+
     _resource->Retain();
 }
 
 ResourceHandle::~ResourceHandle()
 {
-    _resource->Release();
+    if (_resource) {
+        _resource->Release();
+    }
+}
+
+ResourceHandle::ResourceHandle(const ResourceHandle &other)
+{
+    _resource = other._resource;
+
+    if (_resource) {
+        _resource->Retain();
+    }
+}
+
+void ResourceHandle::operator=(const ResourceHandle &other)
+{
+    if (_resource) {
+        _resource->Release();
+    }
+
+    _resource = other._resource;
+
+    if (_resource) {
+        _resource->Retain();
+    }
 }
 
 

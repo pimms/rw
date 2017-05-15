@@ -18,6 +18,8 @@ public:
 
     bool Load() override;
 
+    sf::Vector2u GetSize() const;
+
 private:
     sf::Texture _texture;
 };

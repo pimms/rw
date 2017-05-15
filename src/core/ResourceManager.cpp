@@ -9,6 +9,7 @@
 #endif
 
 #include "Texture.h"
+#include "RawResource.h"
 
 namespace rw
 {
@@ -17,7 +18,8 @@ namespace core
 
 
 ResourceManager::ResourceManager(const std::string &rootPath):
-    _rootPath(rootPath)
+    _rootPath(rootPath),
+    _loadedBytes(0)
 {
     UpdateIndex();
 }
@@ -29,8 +31,11 @@ ResourceManager::~ResourceManager()
 
 void ResourceManager::Purge()
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     for (auto it = _resources.begin(); it != _resources.end(); it++) {
         if (it->second && it->second->GetRetainCount() <= 0) {
+            _loadedBytes -= it->second->GetBuffer()->GetSize();
             it->second = nullptr;
         }
     }
@@ -38,11 +43,15 @@ void ResourceManager::Purge()
 
 void ResourceManager::UpdateIndex()
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     IndexRecursively("");
 }
 
-ResourceHandle::Ptr ResourceManager::Load(ResourceType type, const std::string &path)
+ResourceHandle ResourceManager::Load(ResourceType type, const std::string &path)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     std::map<std::string, Resource::Ptr>::iterator itPointer;
     itPointer = _resources.find(path);
 
@@ -77,19 +86,50 @@ ResourceHandle::Ptr ResourceManager::Load(ResourceType type, const std::string &
     if (found) {
         if (itPointer->second) {
             resource = itPointer->second.get();
+
+            if (resource->GetType() != type) {
+                // TODO: Throw an exception with a more useful message
+                throw std::runtime_error("Resource already loaded as different type");
+            }
         } else {
-            _resources[path] = std::move(LoadResource(type, path));
+            Resource::Ptr resPtr = std::move(LoadResource(type, path));
+            if (resPtr->GetType() != type) {
+                throw std::runtime_error(
+                        "Resource loaded successfully, but "
+                        "does not have the expected type");
+            }
+
+            _resources[path] = std::move(resPtr);
             resource = _resources[path].get();
+            _loadedBytes += resource->GetBuffer()->GetSize();
         }
     }
 
-    if (resource) {
-        ResourceHandle::Ptr handle = ResourceHandle::Ptr(new ResourceHandle(resource));
-        return handle;
+    if (!resource) {
+        throw std::runtime_error("Failed to load resource: " + path);
     }
 
-    return nullptr;
+    ResourceHandle handle(resource);
+    return handle;
 }
+
+std::vector<std::string> ResourceManager::GetAssetList() const
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    std::vector<std::string> vec;
+    for (auto it = _resources.begin(); it != _resources.end(); it++) {
+        vec.push_back(it->first);
+    }
+
+    return vec;
+}
+
+size_t ResourceManager::GetLoadedBytes() const
+{
+    return _loadedBytes;
+}
+
 
 #ifdef WIN32
 void ResourceManager::IndexRecursively(const std::string &path)
@@ -123,7 +163,7 @@ void ResourceManager::IndexRecursively(const std::string &path)
             // Also, add the filename as-is. We'll handle case sensitivity
             // when the resource is being requested.
             const std::string assetDir = path + ent->d_name;
-            if (_resources.count(assetDir) != 0) {
+            if (_resources.count(assetDir) == 0) {
                 _resources[assetDir] = nullptr;
             }
         }
@@ -145,6 +185,9 @@ Resource::Ptr ResourceManager::LoadResource(ResourceType type, const std::string
         switch (type) {
             case ResourceType::TEXTURE:
                 resource = Resource::Ptr(new Texture(std::move(buf)));
+                break;
+            case ResourceType::RAW:
+                resource = Resource::Ptr(new RawResource(std::move(buf)));
                 break;
             default:
                 printf("No handler for resource type '%d', requested for resource '%s'\n",
