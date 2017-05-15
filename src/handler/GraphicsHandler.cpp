@@ -13,7 +13,7 @@ GraphicsHandler::GraphicsHandler(std::shared_ptr<sf::RenderWindow> window):
 {
 }
 
-void GraphicsHandler::UpdateGraphics()
+void GraphicsHandler::Update()
 {
     _window->clear();
     for(auto & texture : _activeTextures)

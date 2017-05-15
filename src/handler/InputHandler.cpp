@@ -20,7 +20,7 @@ InputHandler::InputHandler(std::shared_ptr<sf::Window> window,
 {
 }
 
-void InputHandler::UpdateInput()
+void InputHandler::Update()
 {
     sf::Event event;
     while (_window->pollEvent(event))

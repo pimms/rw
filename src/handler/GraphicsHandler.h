@@ -19,7 +19,7 @@ private:
 
 public:
     GraphicsHandler(std::shared_ptr<sf::RenderWindow> window);
-    void UpdateGraphics();
+    void Update();
     void AddTexture(std::string ID, std::string texture);
 
     void AddActiveTexture(std::string ID);

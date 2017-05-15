@@ -8,14 +8,14 @@
 #include <SFML/Audio.hpp>
 
 // rw
-#include "IAudioHandler.h"
+#include "AudioHandlerInterface.h"
 
 namespace rw
 {
 namespace handler
 {
 
-class MusicHandler : public IAudioHandler
+class MusicHandler : public AudioHandlerInterface
 {
 private:
     std::shared_ptr<sf::Music>          _music;

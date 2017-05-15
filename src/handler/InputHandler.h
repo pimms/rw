@@ -8,7 +8,7 @@
 #include <SFML/Window.hpp>
 
 // rw
-#include "IAudioHandler.h"
+#include "AudioHandlerInterface.h"
 #include "../core/EventDispatch.h"
 #include "KeyboardState.h"
 
@@ -25,7 +25,7 @@ private:
 
 public:
     InputHandler(std::shared_ptr<sf::Window> window, std::shared_ptr<EventDispatch> event);
-    void UpdateInput();
+    void Update();
 };
 
 } // handler

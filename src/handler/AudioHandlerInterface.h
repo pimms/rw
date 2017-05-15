@@ -8,7 +8,7 @@ namespace rw
 namespace handler
 {
 
-class IAudioHandler
+class AudioHandlerInterface
 {
 public:
     virtual bool AddAudio(std::string ID, std::string file) = 0;
