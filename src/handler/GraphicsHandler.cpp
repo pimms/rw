@@ -1,8 +1,7 @@
-#include <iostream>
-
 #include "GraphicsHandler.h"
 
-static std::string RESOURCES = "../resources/images/";
+// std
+#include <iostream>
 
 namespace rw
 {
@@ -17,21 +16,62 @@ GraphicsHandler::GraphicsHandler(std::shared_ptr<sf::RenderWindow> window):
 void GraphicsHandler::UpdateGraphics()
 {
     _window->clear();
-    Draw();
+    for(auto & texture : _activeTextures)
+    {
+        Draw(texture.second);
+    }
     _window->display();
 }
 
-void GraphicsHandler::Draw()
+void GraphicsHandler::AddTexture(std::string ID, std::string texture)
 {
-    sf::Texture texture;
-    if(!texture.loadFromFile(RESOURCES + "ball.png"))
+    if(_textures.find(ID) != _textures.end())
     {
-        std::cout << "Error: failed to load image" << std::endl;
+        std::cout << "Texture " << ID << " already exist" << std::endl;
+        return;
     }
 
+    sf::Texture tex;
+    if(!tex.loadFromFile(texture))
+    {
+        std::cout << "Error: failed to load texture " << texture << " as " << ID << std::endl;
+    }
+
+    std::cout << "Add texture " << texture << " as " << ID << std::endl;
+    _textures.insert(std::make_pair(ID, tex));
+}
+
+void GraphicsHandler::AddActiveTexture(std::string ID)
+{
+    if(_textures.find(ID) != _textures.end())
+    {
+        _activeTextures.insert(std::make_pair(ID, _textures[ID]));
+    }
+}
+
+void GraphicsHandler::RemoveActiveTexture(std::string ID)
+{
+    if(_activeTextures.find(ID) != _activeTextures.end())
+    {
+        _activeTextures.erase(ID);
+    }
+}
+
+bool GraphicsHandler::IsActive(std::string ID)
+{
+    if(_activeTextures.find(ID) != _activeTextures.end())
+    {
+        return true;
+    }
+    return false;
+}
+
+//¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
+
+void GraphicsHandler::Draw(sf::Texture texture)
+{
     sf::Sprite sprite;
     sprite.setTexture(texture);
-
     _window->draw(sprite);
 }
 

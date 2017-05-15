@@ -11,6 +11,10 @@ int main()
     auto window = std::make_shared<sf::RenderWindow>(sf::VideoMode(800, 600), "Rogue Waters");
     auto inputHandler = std::make_shared<rw::handler::InputHandler>(window, eventDispatch);
     auto graphicsHandler = std::make_shared<rw::handler::GraphicsHandler>(window);
+    auto inputHandler = std::make_shared<rw::handler::InputHandler>(window, graphicsHandler);
+
+    graphicsHandler->AddTexture("ball", "../resources/images/ball.png");
+    graphicsHandler->AddActiveTexture("ball");
 
     while (window->isOpen())
     {

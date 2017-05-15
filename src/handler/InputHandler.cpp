@@ -5,6 +5,8 @@
 #include <chrono>
 #include <thread>
 
+#include "GraphicsHandler.h"
+
 namespace rw
 {
 namespace handler
