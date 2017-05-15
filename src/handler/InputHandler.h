@@ -9,6 +9,8 @@
 
 // rw
 #include "IAudioHandler.h"
+#include "../core/EventDispatch.h"
+#include "KeyboardState.h"
 
 namespace rw
 {
@@ -18,9 +20,11 @@ class InputHandler
 {
 private:
     std::shared_ptr<sf::Window> _window;
+    std::shared_ptr<EventDispatch> _eventDispatch;
+    KeyboardState _keyboardState;
 
 public:
-    InputHandler(std::shared_ptr<sf::Window> window);
+    InputHandler(std::shared_ptr<sf::Window> window, std::shared_ptr<EventDispatch> event);
     void UpdateInput();
 };
 
