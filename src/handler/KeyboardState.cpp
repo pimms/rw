@@ -1,5 +1,6 @@
 #include "KeyboardState.h"
 #include "../event/InputEvents.h"
+#include <cstring>
 
 namespace rw
 {
