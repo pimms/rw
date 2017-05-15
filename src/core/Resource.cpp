@@ -100,6 +100,14 @@ void ResourceHandle::operator=(const ResourceHandle &other)
     }
 }
 
+void ResourceHandle::Reset()
+{
+    if (_resource) {
+        _resource->Release();
+        _resource = nullptr;
+    }
+}
+
 
 }
 }

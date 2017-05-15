@@ -80,6 +80,9 @@ public:
     ResourceHandle(const ResourceHandle &other);
     void operator=(const ResourceHandle &other);
 
+    // Releases the Resource, and NULLs out the reference.
+    void Reset();
+
     // Throws an std::exception if the Resource is NULL.
     template<class ResT = Resource>
     ResT* Get()
