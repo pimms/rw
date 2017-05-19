@@ -20,6 +20,15 @@ namespace rw
 namespace test
 {
 
+TEST(ResourceTets, InvalidRootDirThrows)
+{
+    ASSERT_ANY_THROW(core::ResourceManager m("./no_way_in_hell_this_dir_exists"));
+}
+
+TEST(ResourceTests, ValidRootDirDoesNotThrow)
+{
+    ASSERT_NO_THROW(core::ResourceManager m(g_assetDir));
+}
 
 TEST(ResourceTests, ResourceManagerInitialization)
 {
