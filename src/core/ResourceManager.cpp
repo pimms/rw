@@ -22,6 +22,13 @@ ResourceManager::ResourceManager(const std::string &rootPath):
     _rootPath(rootPath),
     _loadedBytes(0)
 {
+    // Ensure that the directory exists
+    DIR *dir = opendir(_rootPath.c_str());
+    if (!dir) {
+        THROW("Specified root directory does not exist: %s", _rootPath.c_str());
+    }
+    closedir(dir);
+
     UpdateIndex();
 }
 

@@ -18,11 +18,11 @@ void Throw(const char *file, const char *func, int line, const char *msg, ...)
     va_end(ap);
 
     std::stringstream ss;
-    ss << "Clank Exception\n";
+    ss << "RW Exception\n";
     ss << "File:   " << file << "\n";
     ss << "Func:   " << func << "\n";
     ss << "Line:   " << line << "\n";
-    ss << formatted;
+    ss << "What:   " << formatted;
     std::string s = ss.str();
     throw Exception(s);
 }
